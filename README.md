@@ -1,18 +1,16 @@
-# Node package template
+# easy-stdout
 
-Template repository for NPM modules
+Run a shell command and get the `stdout` as a string.
 
-## Stack
+## Usage
 
-- pnpm
-- TypeScript
-- vitest
-- prettier
-- ESLint
-- husky
+```sh
+pnpm install easy-stdout
+```
 
-## GitHub Actions
+```tsx
+import stdout from 'easy-stdout'
 
-- Lint and test pull requests
-- Publish to NPM when tags are pushed
-- Dependabot
+console.log(await stdout('echo "Hello, world!"'))
+// Logs 'Hello, world!'
+```

@@ -1,6 +1,6 @@
 {
-    "name": "package-name",
-    "version": "0.0.1",
+    "name": "easy-stdout",
+    "version": "0.1.0",
     "scripts": {
         "build": "tsc",
         "test": "vitest .",
@@ -34,16 +34,16 @@
     },
     "packageManager": "pnpm@10.12.1",
     "keywords": [],
-    "description": "package-name",
+    "description": "Get any shell command's stdout as a string",
     "author": {
         "name": "Craig Patik",
         "email": "craig@patik.com",
         "url": "https://patik.com"
     },
-    "homepage": "https://github.com/patik/inquirer-form-prompt",
+    "homepage": "https://github.com/patik/easy-stdout",
     "repository": {
         "type": "git",
-        "url": "https://github.com/patik/inquirer-form-prompt.git"
+        "url": "https://github.com/patik/easy-stdout.git"
     },
     "license": "MIT",
     "publishConfig": {

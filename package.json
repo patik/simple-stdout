@@ -1,0 +1,52 @@
+{
+    "name": "package-name",
+    "version": "0.0.1",
+    "scripts": {
+        "build": "tsc",
+        "test": "vitest .",
+        "test:once": "vitest run",
+        "format": "prettier --write --list-different .",
+        "check-format": "prettier --check .",
+        "lint": "tsc --noEmit && eslint . --fix && pnpm run format",
+        "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
+        "ci": "pnpm build && pnpm check-format && pnpm check-exports",
+        "prepublishOnly": "pnpm run ci",
+        "prepare": "husky"
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "files": [
+        "dist"
+    ],
+    "devDependencies": {
+        "@arethetypeswrong/cli": "^0.18.2",
+        "@eslint/js": "^9.28.0",
+        "@types/node": "^22.15.30",
+        "eslint": "^9.28.0",
+        "eslint-config-prettier": "^10.1.5",
+        "eslint-plugin-prettier": "^5.4.1",
+        "husky": "^9.1.7",
+        "prettier": "3.5.3",
+        "tsx": "^4.19.4",
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.33.1",
+        "vitest": "^3.2.3"
+    },
+    "packageManager": "pnpm@10.12.1",
+    "keywords": [],
+    "description": "package-name",
+    "author": {
+        "name": "Craig Patik",
+        "email": "craig@patik.com",
+        "url": "https://patik.com"
+    },
+    "homepage": "https://github.com/patik/inquirer-form-prompt",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/patik/inquirer-form-prompt.git"
+    },
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    }
+}

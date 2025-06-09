@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "target": "ES2023",
+        "lib": ["ES2023"],
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "NodeNext",
+        "moduleDetection": "force",
+        "isolatedModules": true,
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "module": "NodeNext",
+        "outDir": "dist",
+        "rootDir": "src",
+        "sourceMap": true,
+        "declaration": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+}

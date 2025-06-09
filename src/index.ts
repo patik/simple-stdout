@@ -5,7 +5,7 @@ import { exec } from 'node:child_process'
  */
 export default async function stdout(command: string): Promise<string> {
     return new Promise((resolve, reject) => {
-        return exec(command, (err, stdout, stderr) => {
+        exec(command, (err, stdout, stderr) => {
             if (err || stderr) {
                 reject(err || new Error(stderr))
             } else if (typeof stdout === 'string') {

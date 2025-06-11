@@ -1,6 +1,6 @@
 {
-    "name": "easy-stdout",
-    "version": "0.1.0",
+    "name": "simple-stdout",
+    "version": "1.0.0",
     "scripts": {
         "build": "tsc",
         "test": "vitest .",
@@ -40,10 +40,10 @@
         "email": "craig@patik.com",
         "url": "https://patik.com"
     },
-    "homepage": "https://github.com/patik/easy-stdout",
+    "homepage": "https://github.com/patik/simple-stdout",
     "repository": {
         "type": "git",
-        "url": "https://github.com/patik/easy-stdout.git"
+        "url": "https://github.com/patik/simple-stdout.git"
     },
     "license": "MIT",
     "publishConfig": {

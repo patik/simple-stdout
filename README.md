@@ -1,15 +1,15 @@
-# easy-stdout
+# simple-stdout
 
 Run a shell command and get the `stdout` as a string.
 
 ## Usage
 
 ```sh
-pnpm install easy-stdout
+pnpm install simple-stdout
 ```
 
 ```tsx
-import stdout from 'easy-stdout'
+import stdout from 'simple-stdout'
 
 console.log(await stdout('echo "Hello, world!"'))
 // Logs 'Hello, world!'

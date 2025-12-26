@@ -1,6 +1,6 @@
 # Project description
 
-simple-stdout is a lightweight package for reading the output of a given command. It is built using Next.js, React, TypeScript, and PNPM.
+simple-stdout is a lightweight Node.js package for reading the output of a given command. It is implemented in TypeScript, tested with Vitest, and uses pnpm for package management.
 
 # General
 

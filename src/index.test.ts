@@ -1,4 +1,6 @@
-import { execSync } from 'node:child_process'
+import { existsSync, unlinkSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import stdout from './index.js'
 
@@ -76,12 +78,13 @@ describe('stdout()', () => {
     })
 
     it('should handle commands with redirection', async () => {
-        const result = await stdout('echo "Redirected output" > temp.txt && cat temp.txt')
+        const tempFile = join(tmpdir(), `stdout-test-${process.pid}.txt`)
+        const result = await stdout(`echo "Redirected output" > ${tempFile} && cat ${tempFile}`)
 
         expect(result).toBe('Redirected output')
 
         // Clean up
-        execSync('rm temp.txt', { stdio: 'ignore' })
+        if (existsSync(tempFile)) unlinkSync(tempFile)
     })
 
     it('should handle commands with subshells', async () => {

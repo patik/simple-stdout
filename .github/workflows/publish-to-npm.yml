@@ -42,4 +42,4 @@ jobs:
 
             # No NODE_AUTH_TOKEN needed with OIDC trusted publishing
             - name: Publish to NPM
-              run: npm publish --access public --no-git-checks
+              run: npm publish --access public --no-git-checks --provenance

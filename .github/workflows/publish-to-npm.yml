@@ -1,37 +1,45 @@
 name: Publish to NPM
 
 on:
-    push:
-        tags:
-            # Only publish on version tags like v1.2.3
-            # git tag v1.2.3 && git push origin v1.2.3
-            # git tag -d v1.2.3 && git push origin :refs/tags/v1.2.3
-            - 'v*.*.*' # Only publish on version tags like v1.2.3
+  push:
+    tags:
+      # Only publish on version tags like v1.2.3
+      # git tag v1.2.3 && git push origin v1.2.3
+      # git tag -d v1.2.3 && git push origin :refs/tags/v1.2.3
+      - "v*.*.*"
 
 jobs:
-    publish:
-        runs-on: ubuntu-latest
+  publish:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    # Required for OIDC trusted publishing
+    permissions:
+      contents: read
+      id-token: write
 
-            - name: Use Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '20'
-                  registry-url: 'https://registry.npmjs.org/'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Install pnpm
-              run: npm install -g pnpm
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org/"
 
-            - name: Install dependencies
-              run: pnpm install
+      # npm 11.5+ required for OIDC trusted publishing
+      - name: Update npm
+        run: npm install -g npm@latest
 
-            - name: Build
-              run: pnpm run ci
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-            - name: Publish to NPM
-              run: npm publish --access public --no-git-checks
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run ci
+
+      # No NODE_AUTH_TOKEN needed with OIDC trusted publishing
+      - name: Publish to NPM
+        run: npm publish --access public --no-git-checks

@@ -2,3 +2,7 @@ node_modules/
 dist/
 .DS_Store
 .vscode/
+
+.github/instructions/*.instructions.md
+.github/chatmodes
+.github/prompts

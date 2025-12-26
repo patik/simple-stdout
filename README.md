@@ -8,7 +8,7 @@ Run a shell command and get the `stdout` as a string.
 pnpm install simple-stdout
 ```
 
-```tsx
+```javascript
 import stdout from 'simple-stdout'
 
 console.log(await stdout('echo "Hello, world!"'))

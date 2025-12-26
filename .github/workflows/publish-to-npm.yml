@@ -6,11 +6,16 @@ on:
             # Only publish on version tags like v1.2.3
             # git tag v1.2.3 && git push origin v1.2.3
             # git tag -d v1.2.3 && git push origin :refs/tags/v1.2.3
-            - 'v*.*.*' # Only publish on version tags like v1.2.3
+            - 'v*.*.*'
 
 jobs:
     publish:
         runs-on: ubuntu-latest
+
+        # Required for OIDC trusted publishing
+        permissions:
+            contents: read
+            id-token: write
 
         steps:
             - name: Checkout code
@@ -22,6 +27,10 @@ jobs:
                   node-version: '24'
                   registry-url: 'https://registry.npmjs.org/'
 
+            # npm 11.5+ required for OIDC trusted publishing
+            - name: Update npm
+              run: npm install -g npm@latest
+
             - name: Install pnpm
               run: npm install -g pnpm
 
@@ -31,7 +40,6 @@ jobs:
             - name: Build
               run: pnpm run ci
 
+            # No NODE_AUTH_TOKEN needed with OIDC trusted publishing
             - name: Publish to NPM
               run: npm publish --access public --no-git-checks
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

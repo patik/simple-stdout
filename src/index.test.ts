@@ -124,7 +124,7 @@ describe('stdoutFile()', () => {
     })
 
     it('should reject on stderr output', async () => {
-        await expect(stdoutFile('echo "This will cause an error" >&2')).rejects.toThrow()
+        await expect(stdoutFile('sh', ['-c', 'echo "This will cause an error" >&2'])).rejects.toThrow()
     })
 
     it('should handle commands with arguments', async () => {

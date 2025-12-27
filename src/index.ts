@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import type { ExecException, ExecFileException } from 'node:child_process'
 import { exec, execFile } from 'node:child_process'
 

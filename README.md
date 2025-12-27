@@ -11,6 +11,12 @@ That's it. Just a tiny library with no frills.
 ## Install
 
 ```sh
+pnpm add simple-stdout
+
+# or
+yarn add simple-stdout
+
+# or
 npm install simple-stdout
 ```
 

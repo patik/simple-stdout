@@ -6,8 +6,12 @@ const callback =
     (err: ExecException | ExecFileException | null, stdout: string, stderr: string) => {
         if (err || stderr) {
             reject(err || new Error(stderr))
-        } else if (typeof stdout === 'string') {
-            resolve(stdout.replace(/\n$/, '')) // Remove trailing newline
+        } else {
+            resolve(
+                stdout
+                    // Remove trailing newline
+                    .replace(/\n$/, ''),
+            )
         }
     }
 

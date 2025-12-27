@@ -13,6 +13,8 @@ const callback =
 
 /**
  * Returns stdout from the given shell command
+ *
+ * Calls `child_process.exec` under the hood.
  */
 export default async function stdout(command: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -20,7 +22,12 @@ export default async function stdout(command: string): Promise<string> {
     })
 }
 
-export async function stdoutFile(file: string, args: string[]): Promise<string> {
+/**
+ * Returns stdout from the given file command
+ *
+ * Calls `child_process.execFile` under the hood.
+ */
+export async function stdoutFile(file: string, args: string[] = []): Promise<string> {
     return new Promise((resolve, reject) => {
         execFile(file, args, callback(resolve, reject))
     })

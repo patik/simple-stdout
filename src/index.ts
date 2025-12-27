@@ -27,7 +27,7 @@ export default async function stdout(command: string): Promise<string> {
 }
 
 /**
- * Returns stdout from the given file command
+ * Returns stdout from executing the given file/executable
  *
  * Calls `child_process.execFile` under the hood.
  */

@@ -2,15 +2,32 @@
 
 Run a shell command and get the `stdout` as a string.
 
-## Usage
+```javascript
+const name = await stdout('git config --get user.name')
+```
+
+That's it. Just a tiny library with no frills.
+
+## Install
 
 ```sh
-pnpm install simple-stdout
+npm install simple-stdout
 ```
+
+## Usage
 
 ```javascript
 import stdout from 'simple-stdout'
 
-console.log(await stdout('echo "Hello, world!"'))
-// Logs 'Hello, world!'
+const name = await stdout('git config --get user.name')
+// 'Gérald Genta'
+```
+
+Need `execFile` instead? (Safer for untrusted input, no shell injection worries.)
+
+```javascript
+import { stdoutFile } from 'simple-stdout'
+
+const name = await stdoutFile('git', ['config', '--get', 'user.name'])
+// 'Gérald Genta'
 ```

@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 
-import type { ExecException, ExecFileException, ExecOptions } from 'node:child_process'
+import type { ExecFileOptions, ExecOptions } from 'node:child_process'
 import { exec, execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 
@@ -10,16 +10,6 @@ const asyncExec = promisify(exec)
  * Removes trailing newline
  */
 const cleanOutput = (output: string): string => output.replace(/\n$/, '')
-
-const callback =
-    (resolve: (value: string | PromiseLike<string>) => void, reject: (reason?: unknown) => void) =>
-    (err: ExecException | ExecFileException | null, stdout: string, stderr: string) => {
-        if (err || stderr) {
-            reject(err || new Error(stderr))
-        } else {
-            resolve(cleanOutput(stdout))
-        }
-    }
 
 /**
  * Returns stdout from the given shell command
@@ -46,8 +36,14 @@ export default async function stdout(command: string, options?: ExecOptions): Pr
  *
  * Calls `child_process.execFile` under the hood.
  */
-export async function stdoutFile(file: string, args: string[] = []): Promise<string> {
+export async function stdoutFile(file: string, args?: readonly string[], options?: ExecFileOptions): Promise<string> {
     return new Promise((resolve, reject) => {
-        execFile(file, args, callback(resolve, reject))
+        execFile(file, args ?? [], options ?? {}, (err, stdout, stderr) => {
+            if (err || stderr) {
+                reject(err || new Error(stderr.toString()))
+            } else {
+                resolve(cleanOutput(stdout.toString()))
+            }
+        })
     })
 }

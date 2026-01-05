@@ -109,7 +109,7 @@ describe('stdout()', () => {
     })
 
     it('should accept env option', async () => {
-        const result = await stdout('echo $TEST_VAR', { env: { TEST_VAR: 'custom-value' } })
+        const result = await stdout('echo $TEST_VAR', { env: { ...process.env, TEST_VAR: 'custom-value' } })
 
         expect(result).toBe('custom-value')
     })

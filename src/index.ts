@@ -31,19 +31,24 @@ export default async function stdout(command: string, options?: ExecOptions): Pr
     return cleanOutput(stdout)
 }
 
+const asyncExecFile = promisify(execFile)
+
 /**
  * Returns stdout from executing the given file/executable
  *
  * Calls `child_process.execFile` under the hood.
  */
 export async function stdoutFile(file: string, args?: readonly string[], options?: ExecFileOptions): Promise<string> {
-    return new Promise((resolve, reject) => {
-        execFile(file, args ?? [], options ?? {}, (err, stdout, stderr) => {
-            if (err || stderr) {
-                reject(err || new Error(stderr.toString()))
-            } else {
-                resolve(cleanOutput(stdout.toString()))
-            }
-        })
-    })
+    const { stdout, stderr } = await asyncExecFile(file, args, options)
+
+    if (stderr) {
+        throw new Error(stderr.toString())
+    }
+
+    if (typeof stdout !== 'string') {
+        return cleanOutput(stdout.toString())
+    }
+
+    // Remove trailing newline
+    return cleanOutput(stdout)
 }

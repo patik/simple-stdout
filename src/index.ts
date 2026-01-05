@@ -1,7 +1,15 @@
-#!/usr/bin/env node
+#!/usr/bin/env npx tsx
 
-import type { ExecException, ExecFileException } from 'node:child_process'
+import type { ExecException, ExecFileException, ExecOptions } from 'node:child_process'
 import { exec, execFile } from 'node:child_process'
+import { promisify } from 'node:util'
+
+const asyncExec = promisify(exec)
+
+/**
+ * Removes trailing newline
+ */
+const cleanOutput = (output: string): string => output.replace(/\n$/, '')
 
 const callback =
     (resolve: (value: string | PromiseLike<string>) => void, reject: (reason?: unknown) => void) =>
@@ -9,11 +17,7 @@ const callback =
         if (err || stderr) {
             reject(err || new Error(stderr))
         } else {
-            resolve(
-                stdout
-                    // Remove trailing newline
-                    .replace(/\n$/, ''),
-            )
+            resolve(cleanOutput(stdout))
         }
     }
 
@@ -22,10 +26,19 @@ const callback =
  *
  * Calls `child_process.exec` under the hood.
  */
-export default async function stdout(command: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        exec(command, callback(resolve, reject))
-    })
+export default async function stdout(command: string, options?: ExecOptions): Promise<string> {
+    const { stdout, stderr } = await asyncExec(command, options)
+
+    if (stderr) {
+        throw new Error(stderr.toString())
+    }
+
+    if (typeof stdout !== 'string') {
+        return cleanOutput(stdout.toString())
+    }
+
+    // Remove trailing newline
+    return cleanOutput(stdout)
 }
 
 /**

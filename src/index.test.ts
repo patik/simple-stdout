@@ -1,4 +1,4 @@
-import { existsSync, unlinkSync } from 'node:fs'
+import { existsSync, unlinkSync, realpathSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -100,6 +100,23 @@ describe('stdout()', () => {
 
         expect(result).toBe('Background process')
     })
+
+    it('should accept cwd option', async () => {
+        const testDir = realpathSync(tmpdir())
+        const result = await stdout('pwd', { cwd: testDir })
+
+        expect(result).toBe(testDir)
+    })
+
+    it('should accept env option', async () => {
+        const result = await stdout('echo $TEST_VAR', { env: { ...process.env, TEST_VAR: 'custom-value' } })
+
+        expect(result).toBe('custom-value')
+    })
+
+    it('should accept timeout option and reject on timeout', async () => {
+        await expect(stdout('sleep 5', { timeout: 100 })).rejects.toThrow()
+    })
 })
 
 describe('stdoutFile()', () => {
@@ -196,5 +213,24 @@ describe('stdoutFile()', () => {
         const result = await stdoutFile('sh', ['-c', 'echo "Background process" & wait'])
 
         expect(result).toBe('Background process')
+    })
+
+    it('should accept cwd option', async () => {
+        const testDir = realpathSync(tmpdir())
+        const result = await stdoutFile('pwd', [], { cwd: testDir })
+
+        expect(result).toBe(testDir)
+    })
+
+    it('should accept env option', async () => {
+        const result = await stdoutFile('sh', ['-c', 'echo $TEST_VAR'], {
+            env: { ...process.env, TEST_VAR: 'custom-file-value' },
+        })
+
+        expect(result).toBe('custom-file-value')
+    })
+
+    it('should accept timeout option and reject on timeout', async () => {
+        await expect(stdoutFile('sleep', ['5'], { timeout: 100 })).rejects.toThrow()
     })
 })

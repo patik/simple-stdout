@@ -1,40 +1,54 @@
 #!/usr/bin/env node
 
-import type { ExecException, ExecFileException } from 'node:child_process'
+import type { ExecFileOptions, ExecOptions } from 'node:child_process'
 import { exec, execFile } from 'node:child_process'
+import { promisify } from 'node:util'
 
-const callback =
-    (resolve: (value: string | PromiseLike<string>) => void, reject: (reason?: unknown) => void) =>
-    (err: ExecException | ExecFileException | null, stdout: string, stderr: string) => {
-        if (err || stderr) {
-            reject(err || new Error(stderr))
-        } else {
-            resolve(
-                stdout
-                    // Remove trailing newline
-                    .replace(/\n$/, ''),
-            )
-        }
-    }
+const asyncExec = promisify(exec)
+
+/**
+ * Removes trailing newline
+ */
+const cleanOutput = (output: string): string => output.replace(/\n$/, '')
 
 /**
  * Returns stdout from the given shell command
  *
  * Calls `child_process.exec` under the hood.
  */
-export default async function stdout(command: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        exec(command, callback(resolve, reject))
-    })
+export default async function stdout(command: string, options?: ExecOptions): Promise<string> {
+    const { stdout, stderr } = await asyncExec(command, options)
+
+    if (stderr) {
+        throw new Error(stderr.toString())
+    }
+
+    if (typeof stdout !== 'string') {
+        return cleanOutput(stdout.toString())
+    }
+
+    // Remove trailing newline
+    return cleanOutput(stdout)
 }
+
+const asyncExecFile = promisify(execFile)
 
 /**
  * Returns stdout from executing the given file/executable
  *
  * Calls `child_process.execFile` under the hood.
  */
-export async function stdoutFile(file: string, args: string[] = []): Promise<string> {
-    return new Promise((resolve, reject) => {
-        execFile(file, args, callback(resolve, reject))
-    })
+export async function stdoutFile(file: string, args?: readonly string[], options?: ExecFileOptions): Promise<string> {
+    const { stdout, stderr } = await asyncExecFile(file, args, options)
+
+    if (stderr) {
+        throw new Error(stderr.toString())
+    }
+
+    if (typeof stdout !== 'string') {
+        return cleanOutput(stdout.toString())
+    }
+
+    // Remove trailing newline
+    return cleanOutput(stdout)
 }

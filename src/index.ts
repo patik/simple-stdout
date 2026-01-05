@@ -1,4 +1,4 @@
-#!/usr/bin/env npx tsx
+#!/usr/bin/env node
 
 import type { ExecFileOptions, ExecOptions } from 'node:child_process'
 import { exec, execFile } from 'node:child_process'

@@ -223,7 +223,9 @@ describe('stdoutFile()', () => {
     })
 
     it('should accept env option', async () => {
-        const result = await stdoutFile('sh', ['-c', 'echo $TEST_VAR'], { env: { ...process.env, TEST_VAR: 'custom-file-value' } })
+        const result = await stdoutFile('sh', ['-c', 'echo $TEST_VAR'], {
+            env: { ...process.env, TEST_VAR: 'custom-file-value' },
+        })
 
         expect(result).toBe('custom-file-value')
     })
